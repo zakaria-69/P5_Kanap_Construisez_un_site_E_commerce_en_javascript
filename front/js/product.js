@@ -63,7 +63,7 @@ const maxQantity=100;
 const minQuantity=0;
 
 //création des conditions à réspecté dans le champ de saisie//
-//si la quantité est inferieur ou égale a 100 et supérieur à 0 ou que l'input est vide on authorise la saisie //
+//si la quantité est inferieur ou égale à 100 et supérieur à 0 ou que l'input est vide on authorise la saisie(mais pas l'envoi) //
 if (quantity.value <= maxQantity && quantity.value > minQuantity || quantity.value==""){
   
 
@@ -77,86 +77,15 @@ else{
 
  }) ;
 
-/*
-
-//création d'un fonction permettant de sauvegarder le panier//
-
-function saveBasket(basket){
-  localStorage.setItem("basket",JSON.stringify(basket));
-}
-
-//création d'une fonction permettant d'obtenir le panier//
-function getBasket(){
-  let basket= localStorage.getItem("basket");
-  if(basket == null){
-return [];
-  } else {
-return JSON.parse(basket);
-  }
-}
-
-//création d'une fonction permettant d'ajouter des produits au panier//
-function addBasket(product){
-let basket = getBasket();
-let foundProduct = basket.find(p=> p.id==product.id);
-if(foundProduct != undefined){
-  foundProduct.quantity++;
-}else{
-  product.quantity=1;
-  basket.push(product);
-}
-
-saveBasket(basket);
-}
-
-//création d'une fonction permettant de supprimer des produit du panier//
-function removeFromBasket(product){
-  let basket =getBasket();
-  basket = basket.filter(p=> p.id != product.id);
-  saveBasket();
-}
-
-//création d'une fonction permettant de changer la quantité de produit du panier//
-function changeQuantity(product,quantity){
-  let basket =getBasket();
-  let foundProduct = basket.find(p=> p.id==product._id);
-  if(foundProduct != undefined){
-    foundProduct.quantity+=quantity;
-    if(foundProduct.quantity <=0){
-      removeFromBasket(Product); 
-    }else{
-      saveBasket(basket);
-    } 
-  } 
-}
-
-//création d'une fonction permettant de définir le nombre total de produit du panier //
-function getNumberProduct(){
-  let basket=getBasket();
-  let number=0;
-  for(let product of basket){
-    number+=product.quantity;
-  }
-  return number;
-}
-
-//création d'une fonction permettant de récupérer le prix total du panier//
-function getTotalPrice(){
-  let basket=getBasket();
-  let total=0;
-  for (let product of basket){
-    total+=product.quantity * product.price;
-  }
-  return total;
-}*/
-
-
 //on crée un évenement au click sur le bouton de commande//
 let addToCart=document.getElementById('addToCart');
   addToCart.addEventListener('click',(e)=>{
-   let productTable=JSON.parse(localStorage.getItem('product'));
+   let productTable=JSON.parse(localStorage.getItem('produit'));
+   console.log(productTable)
    let optionColor=document.getElementById("colors");
    let quantity=document.getElementById('quantity');
+
+   console.log(productTable)
 
    //on ajoute des valeurs aux tableau sous forme d'objet selon les champs présent 'couleur' 'quantitée'//
 const selectItem=Object.assign({},itemsData,{
@@ -167,7 +96,7 @@ const selectItem=Object.assign({},itemsData,{
 
 //on crée une condition pour la validation de l'input//
 //si la quantité et la couleurs ne sont pas choisie on previent l'utilisateur de l'erreur et on interdit l'envoie des données//
-
+//sinon on autorise l'envoi au localstorage et à la page panier//
 if( selectItem.colors != '' && selectItem.quantity != 0){
   alert("ajouter au panier avec succès") ;
 } else{
@@ -176,17 +105,61 @@ if( selectItem.colors != '' && selectItem.quantity != 0){
   return [];
 }
 
-console.log(selectItem);
-console.log(quantity);
 
+ 
+
+//si productTable est vide on le passe sous forme de tableau,on push les données de selectItem
+//et on envoie le tout vers le localStorage//
    if(productTable==null){
     productTable=[];
     productTable.push(selectItem);
     localStorage.setItem("produit",JSON.stringify(productTable));
+    console.log('produit crée');
+   
+    //sinon si productTable existe déjà on incrémente la nouvelle valeur //
+   }else if( productTable != null){
+    
+    for(i=0;i<productTable.length;i++){
+     
+
+      //si l'id de l'élément du localStorage et = à l'id de l'élément sélectionné et qu'ils sont de même couleurs alors on ajoute les quantitées//
+        if(productTable[i]._id == itemsData._id && productTable[i].colors==optionColor.value){
+
+        //on transforme les chiffre qui sont des strings en Numbers pour pouvoir les additionner//
+          let storageQuantity=Number(productTable[i].quantity);
+          let selectedItemQuantity=Number(selectItem.quantity);
+        
+          let total=storageQuantity+selectedItemQuantity;
+          console.log(total);
+      //on inject le total dans le localStorage//
+          return( productTable[i].quantity=total),
+          /*console.log(quantity.value),
+          console.log(productTable[i].quantity+=selectItem.quantity),
+          console.log(typeof selectItem.quantity),
+          console.log("produit exist"),
+          console.log(itemsData),
+          console.log(selectItem.quantity),*/
+          
+
+        //on renvoie la nouvelle valeur sous forme de string dans le localStorage//
+          localStorage.setItem("produit",JSON.stringify(productTable)),
+          //on récupére la nouvelle valeur dans sa forme originelle//
+          productTable=JSON.parse(localStorage.getItem("produit"));
+        }
+
+    }
+
+
+    
+   
+  
+   
    }
-   console.log(productTable)
-   console.log(optionColor);
+  
+   return productTable=JSON.parse(localStorage.getItem("produit"));
+   
   })
+
 
 
 

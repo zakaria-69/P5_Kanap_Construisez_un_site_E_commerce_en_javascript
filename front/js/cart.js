@@ -5,7 +5,7 @@ let cartItems=document.getElementById('cart__items');
 
 function displayBasket(){
     for (let produit in productTable){
-
+//création des éléments et ajouts de leurs attributs comparément à l'exemple présent dans le DOM//
         let article=document.createElement('article');
         article.classList.add("cart__item");
         article.setAttribute('data-id',productTable[produit]._id);
@@ -35,7 +35,7 @@ function displayBasket(){
        
 
     let prix=document.createElement('p');
-        prix.append(`${productTable[produit].price}`);
+        prix.append(`${productTable[produit].price}€`);
 
     let settings=document.createElement('div');
     settings.classList.add('cart__item__content__settings');
@@ -62,10 +62,11 @@ function displayBasket(){
     deleteItem.classList.add('deletItem');
     deleteItem.append("supprimer");
     
+//implémentation des élement crée dans le DOM selon la hiérarchie présente dans l'exemple commenté du DOM//
+
         cartItems.append(article,div,img,content,description,titre,color,prix,settings,settingsQuantity,quantity,input,divDelete,deleteItem);
         article.append(div,img,content,description,titre,color,prix,settings,settingsQuantity,quantity,input,divDelete,deleteItem);
         div.append(img);
-        
         content.append(description,titre,color,prix,settings,settingsQuantity,quantity,input,divDelete,deleteItem);
         description.append(titre,color,prix);
         settings.append(settingsQuantity,quantity,input,divDelete,deleteItem);
@@ -74,6 +75,7 @@ function displayBasket(){
        
 }}
 
+//appel de la fonction crée ci-dessu//
 displayBasket();
 
 
