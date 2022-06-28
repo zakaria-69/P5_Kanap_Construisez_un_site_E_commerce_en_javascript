@@ -17,11 +17,9 @@ async function fetchItemsData () {
     for(i=0;i<itemsData.length;i++){
 
       let itemsLink =document.createElement('a');
-      itemsLink.append();
       itemsLink.href=`./product.html?id=${itemsData[i]._id}` ;
 
       let itemsImages=document.createElement('img');
-      itemsImages.append();
       itemsImages.src=`${itemsData[i].imageUrl}`; 
       itemsImages.alt=`${itemsData[i].altTxt}`;
   

@@ -71,7 +71,8 @@ function displayBasket(){
         description.append(titre,color,prix);
         settings.append(settingsQuantity,quantity,input,divDelete,deleteItem);
         settingsQuantity.append(quantity,input);
-        divDelete.append(deleteItem);  
+        divDelete.append(deleteItem); 
+         
        
 }}
 
