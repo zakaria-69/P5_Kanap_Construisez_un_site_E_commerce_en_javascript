@@ -7,7 +7,7 @@ console.log(id);
 
 let itemsData=[];
 
-//fonction de récupération des informations par produit/id et intégration dans le DOM //
+//fonction de récupération des informations par produits/id et intégration dans le DOM //
  async function productsDisplay () {
  await fetch("http://localhost:3000/api/products/" + id)
  .then((res)=> res.json())
@@ -80,19 +80,26 @@ else{
 //on crée un évenement au click sur le bouton de commande//
 let addToCart=document.getElementById('addToCart');
   addToCart.addEventListener('click',(e)=>{
-   let productTable=JSON.parse(localStorage.getItem('produit'));
-   console.log(productTable)
+   let productTable=JSON.parse(localStorage.getItem('produits'));
    let optionColor=document.getElementById("colors");
    let quantity=document.getElementById('quantity');
 
    console.log(productTable)
 
    //on ajoute des valeurs aux tableau sous forme d'objet selon les champs présent 'couleur' 'quantitée'//
-const selectItem=Object.assign({},itemsData,{
+/*const selectItem=Object.assign({},itemsData,{
   colors:`${optionColor.value}`,
   quantity:`${quantity.value}`,
   
-})
+})*/
+
+const selectItem={
+ colors:`${optionColor.value}`,
+  quantity:`${quantity.value}`,
+  id:`${itemsData._id}`,
+}
+
+
 
 //on crée une condition pour la validation de l'input//
 //si la quantité et la couleurs ne sont pas choisie on previent l'utilisateur de l'erreur et on interdit l'envoie des données//
@@ -113,8 +120,10 @@ if( selectItem.colors != '' && selectItem.quantity != 0){
    if(productTable==null){
     productTable=[];
     productTable.push(selectItem);
-    localStorage.setItem("produit",JSON.stringify(productTable));
-    console.log('produit crée');
+    console.log(productTable)
+    localStorage.setItem("produits",JSON.stringify(productTable));
+    console.log('produits crée');
+    console.log(selectItem)
    
     //sinon si productTable existe déjà on incrémente la nouvelle valeur //
    }else if( productTable != null){
@@ -122,12 +131,15 @@ if( selectItem.colors != '' && selectItem.quantity != 0){
     for(i=0;i<productTable.length;i++){
      
 
-      //si l'id de l'élément du localStorage et = à l'id de l'élément sélectionné et qu'ils sont de même couleurs alors on ajoute les quantitées//
-        if(productTable[i]._id == itemsData._id && productTable[i].colors==optionColor.value){
+      //si l'id de l'élément du localStorage est = à l'id de l'élément sélectionné et qu'ils sont de même couleurs alors on ajoute les quantitées//
+        if(productTable[i].id == selectItem.id && productTable[i].colors==optionColor.value){
+          console.log("produit exist")
 
         //on transforme les chiffre qui sont des strings en Numbers pour pouvoir les additionner//
           let storageQuantity=Number(productTable[i].quantity);
+          console.log(storageQuantity)
           let selectedItemQuantity=Number(selectItem.quantity);
+          console.log(selectedItemQuantity)
         
           let total=storageQuantity+selectedItemQuantity;
           console.log(total);
@@ -136,16 +148,17 @@ if( selectItem.colors != '' && selectItem.quantity != 0){
           /*console.log(quantity.value),
           console.log(productTable[i].quantity+=selectItem.quantity),
           console.log(typeof selectItem.quantity),
-          console.log("produit exist"),
+          console.log("produits exist"),
           console.log(itemsData),
           console.log(selectItem.quantity),*/
           
 
         //on renvoie la nouvelle valeur sous forme de string dans le localStorage//
-          localStorage.setItem("produit",JSON.stringify(productTable)),
+          localStorage.setItem("produits",JSON.stringify(productTable)),
           //on récupére la nouvelle valeur dans sa forme originelle//
-          productTable=JSON.parse(localStorage.getItem("produit"));
+          productTable=JSON.parse(localStorage.getItem("produits"));
         }
+        console.log(productTable);
 
     }
 
@@ -156,7 +169,7 @@ if( selectItem.colors != '' && selectItem.quantity != 0){
    
    }
   
-   return productTable=JSON.parse(localStorage.getItem("produit"));
+   return productTable=JSON.parse(localStorage.getItem("produits"));
    
   })
 

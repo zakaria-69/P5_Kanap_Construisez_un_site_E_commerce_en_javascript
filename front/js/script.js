@@ -2,6 +2,8 @@
 //création d'un tableau vide pour y insérer les éléments//
 let itemsData = [];
 let i;
+let items=document.getElementById("items");
+//console.log("items" + items);
 
 //Appel API via la méthode fetch (get)//
 async function fetchItemsData () {
