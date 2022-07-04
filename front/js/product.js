@@ -84,8 +84,6 @@ let addToCart=document.getElementById('addToCart');
    let optionColor=document.getElementById("colors");
    let quantity=document.getElementById('quantity');
 
-   console.log(productTable)
-
    //on ajoute des valeurs aux tableau sous forme d'objet selon les champs présent 'couleur' 'quantitée'//
 /*const selectItem=Object.assign({},itemsData,{
   colors:`${optionColor.value}`,
@@ -115,7 +113,7 @@ if( selectItem.colors != '' && selectItem.quantity != 0){
 
  
 
-//si productTable est vide on le passe sous forme de tableau,on push les données de selectItem
+//si productTable est vide on le passe sous forme de tableau,on push les données de selectItem dans ce tableau
 //et on envoie le tout vers le localStorage//
    if(productTable==null){
     productTable=[];
@@ -144,34 +142,31 @@ if( selectItem.colors != '' && selectItem.quantity != 0){
           let total=storageQuantity+selectedItemQuantity;
           console.log(total);
       //on inject le total dans le localStorage//
-          return( productTable[i].quantity=total),
-          /*console.log(quantity.value),
-          console.log(productTable[i].quantity+=selectItem.quantity),
-          console.log(typeof selectItem.quantity),
-          console.log("produits exist"),
-          console.log(itemsData),
-          console.log(selectItem.quantity),*/
-          
-
+          return( productTable[i].quantity=total),       
         //on renvoie la nouvelle valeur sous forme de string dans le localStorage//
           localStorage.setItem("produits",JSON.stringify(productTable)),
           //on récupére la nouvelle valeur dans sa forme originelle//
           productTable=JSON.parse(localStorage.getItem("produits"));
-        }
-        console.log(productTable);
+        }}};
+        //on boucle le tableau et si un id du tableau est égale a l'id du produit selectionné mais pas la même couleur on l'ajoute au localstorage
+        //ou si l'id est différent on l' ajoute au localstorage également
+        for(i=0;i<productTable.length;i++){
+          if(productTable[i].id == selectItem.id && productTable[i].colors != optionColor.value || productTable[i].id != selectItem.id){
+            return(
+              productTable.push(selectItem),
+              localStorage.setItem('produits',JSON.stringify(productTable)),
+              productTable=JSON.parse(localStorage.getItem('produits')),
+              console.log(productTable)
+            )
+          }
+        } 
 
-    }
-
-
-    
-   
   
+   return productTable=JSON.parse(localStorage.getItem("produits"))
    
-   }
-  
-   return productTable=JSON.parse(localStorage.getItem("produits"));
    
-  })
+  });
+
 
 
 
