@@ -356,12 +356,10 @@ function quantityBasketFromInput(selectItem){
 
   window.addEventListener('load',(e)=> {
 let itemQuantity=document.getElementsByClassName('itemQuantity');
-console.log(itemQuantity.length)
 for (let i=0;i<itemQuantity.length;i++){
   console.log("ok")
   let maxQuantity=100;
   let minQuantity=1;
-  console.log(itemQuantity[i].value)
 
 itemQuantity[i].addEventListener('change',(e)=>{
   if( itemQuantity[i].value > maxQuantity || itemQuantity[i].value <minQuantity){
@@ -374,8 +372,6 @@ itemQuantity[i].addEventListener('change',(e)=>{
     selectItem[i].quantity=itemQuantity[i].value;
     //selectItem.push(itemQuantity[i].value);
     finalProducts=selectItem;
-    console.log(finalProducts)
-   console.log(selectItem)
    //finalProducts.push(selectItem)
     //console.log(finalProducts)
     console.log(selectItem[i].quantity)
@@ -443,13 +439,20 @@ function deletProducts(selectItem){
     deletCard=deletItem[i];
     deletCard.addEventListener("click", (e)=>{
       console.log("ok")
-      let deletId=e.target.closest('article').getAttribute('data-id');
-      let deletItemColor=e.target.closest('article').getAttribute('data-color');
+      let deletId=selectItem[i].id;
+      let deletItemColor=selectItem[i].colors;
 
+      selectItem=selectItem.filter(el=> el.id!==deletId || el.colors !==deletItemColor);
+
+      localStorage.setItem('produits',JSON.stringify(selectItem));
+
+      if (selectItem==0 || selectItem==null){
+        localStorage.clear();
+      }
       
 
       alert("produit supprimer");
-      location.reload;
+      location.reload();
 
       console.log(deletId,deletItemColor) 
      
@@ -495,7 +498,7 @@ console.log('test');
  //console.log(PriceByItems,quantityItem)
 
  prixTotalCalcul.push(quantityItem,PriceByItems)
-
+  
 totalPrice.append(`${eval(prixTotalCalcul.join("*"))}`);
 //console.log(totalPrice)
 
