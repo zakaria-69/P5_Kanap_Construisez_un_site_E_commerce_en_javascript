@@ -1,3 +1,5 @@
+//recuperation du contenu des "produits" du localstorage 
+
 let selectItem=JSON.parse(localStorage.getItem("produits"));
 console.log(selectItem)
  let cartItems=document.getElementById('cart__items');
@@ -19,12 +21,12 @@ OrderTable(itemsData);
  )
  }
 
-  //fonction productTable retourne un tableau des données du backend(API)
+ 
   if(selectItem===null || selectItem ==0){
     let emptyBasket=document.querySelector("#cartAndFormContainer h1")
     emptyBasket.textContent='vôtre Panier est vide.';
   }else{
-
+ //fonction productTable retourne un tableau des données du backend(API)
     productTable();
   }
 
@@ -34,7 +36,7 @@ OrderTable(itemsData);
 function OrderTable(itemsData){
   
     for (let identifiants in selectItem){
-        //on parcour le tableau et attribut les éléments couleurs et quantitée quand l'id du tableau de l'API est identique a l'élément sélectionner dans le ls//
+        //on parcour le tableau et attribut les éléments couleurs et quantitée à l'élément sélectionner dans le ls//
         for(let i=0;i<itemsData.length;i++){
           if(selectItem[identifiants].id==itemsData[i]._id /*&& itemsData[identifiants].colors==selectItem[i].colors*/){
             let finalProduct = [];
@@ -134,7 +136,7 @@ function displayBasket(finalProducts){
        deleteItem.classList.add('deletItem');
        deleteItem.append("supprimer");
        
-   //implémentation des élement crée dans le DOM selon la hiérarchie présente dans l'exemple commenté du DOM//
+   //implémentation des élements crée dans le DOM selon la hiérarchie présente dans l'exemple commenté du DOM//
    
            cartItems.append(article,div,img,content,description,titre,color,prix,settings,settingsQuantity,quantity,input,divDelete,deleteItem);
            article.append(div,img,content,description,titre,color,prix,settings,settingsQuantity,quantity,input,divDelete,deleteItem);
@@ -152,7 +154,7 @@ function displayBasket(finalProducts){
 
 function formValidation(selectItem){
   
-
+//récuperation des éléments du formulaire page panier
 
 
 
@@ -184,6 +186,8 @@ const emailErrorMsg=document.getElementById('emailErrorMsg')
 const order=document.getElementById('order');
 //console.log(order);
     
+
+//traitements des inputs et du bouton d'envoie du formulaire
 
 firstName.addEventListener('change',(e)=>{
   //console.log(e.target.value)
@@ -261,6 +265,8 @@ email.addEventListener('change',(e)=>{
 
 });
 
+//traitement de la soumission du formulaire 
+
 order.addEventListener('click',(e)=>{
 e.preventDefault();
 const firstName=document.getElementById('firstName');
@@ -287,28 +293,38 @@ const email=document.getElementById('email')
 let order=document.getElementById('order');
 //console.log(order);
     
+//condition pour pouvoir validé le formulaire 
 
 /*if (finalProducts==null){
+  e.preventDefault();
   alert("vôtre pannier est vide,veuilez sélectionner des articles pour passer commande.");
-  e.preventDefault();
+  return false;
+  
 }else if(firstName.value===''|| lastName.value===''|| address.value===''|| city.value==='' || email.value===''){
+  e.preventDefault();
   alert("Veuillez remplir tout les champs du formulaire pour passer commande");
+  return false;
+  
+}else if(firstName.value !==false && lastName.value !==false && address.value !==false  && city.value !== false && email.value !==false){
   e.preventDefault();
-}else if(firstName.value !=false && lastName.value != false && address.value !=false && city.value !=false &&email.value !=false){
-  alert('veuillez remplir tout les champs du formulaire avec des données valide')
-  e.preventDefault();
+  alert('veuillez remplir tout les champs du formulaire avec des données valide');
+return false;
+ 
 }else{
   alert('commande validée');
+  
  
 }*/
 
 
 
 //envoie des données vers l'api et récupération du numéro de commande
+//recuperation des ID du localstorage dans un tableau
 let idProducts=[];
 for (let i=0;i<selectItem.length;i++){
   idProducts.push(selectItem[i].id)
 }
+//création de l'objet contact
 order ={
   contact : {
     firstName : firstName.value,
@@ -320,6 +336,7 @@ order ={
   products : idProducts
   
 }
+//préparation a l'appel POST API
 const options ={
   method :'POST',
   body : JSON.stringify(order),
@@ -329,6 +346,8 @@ const options ={
   },
 
 };
+
+//appel api ,on vide le localstorage et recupere le numero de commande
 
 fetch("http://localhost:3000/api/products/order", options)
 .then ((response)=> response.json())
@@ -386,16 +405,14 @@ itemQuantity[i].addEventListener('change',(e)=>{
    
   }
 
-
+//on appel la fonction quantityBasketFromInput avec son callback
 quantityBasketFromInput(selectItem);
 
 
 
 
 //calcul la quantité total des éléments du panier
-
-
-function totalQuantityByasket(selectItem){
+function totalQuantityBasket(selectItem){
   let totalQuantityItems=document.getElementById("totalQuantity");
   //selectItem=JSON.parse(localStorage.getItem("produits"));
 
@@ -405,6 +422,7 @@ function totalQuantityByasket(selectItem){
 //boucle pour recupérer toutes les quantitées du panier
   for (let i=0;i<selectItem.length;i++){
     
+    //on passe la quantité en Number dans une nouvelle variable
     let quantityItem=Number(selectItem[i].quantity);
     console.log(selectItem[i].quantity)
    
@@ -416,40 +434,46 @@ function totalQuantityByasket(selectItem){
      let sommeQuantity= quantityTotalCalcul.reduce((accumulator,currentValue) =>{
       return accumulator + currentValue;
     })
+    console.log(sommeQuantity)
+//integration du résultat au DOM
     totalQuantityItems.append(sommeQuantity);
     
 
 
 }
-
-totalQuantityByasket(selectItem);
+//appel de la fonction totalQuantityBasket
+totalQuantityBasket(selectItem);
 
 //supprimer un élément sur la page panier
 
 function deletProducts(selectItem){
-  let deletProduct=document.getElementsByClassName('deletItem');
-  console.log(deletProduct);
-
+ 
   window.addEventListener("load", (e)=>{
-    let deletItem=document.getElementsByClassName('deletItem');
+     let deletItem=document.getElementsByClassName('deletItem');
     console.log(deletItem.length)
 
-  for (let i=0;i<deletProduct.length;i++){
+    //boucle a travers l'html collection
+  for (let i=0;i<deletItem.length;i++){
     console.log(deletItem.length)
     deletCard=deletItem[i];
+    //on ecoute le click sur chaque bouton delete 
     deletCard.addEventListener("click", (e)=>{
       console.log("ok")
+      //on initie des variables qui prenne pour id et couleurs les id et couleur de l'élément cliquer du LS
       let deletId=selectItem[i].id;
       let deletItemColor=selectItem[i].colors;
 
+      //dans le LS on filtre les elements si l'élément cliqué a un id different ou une couleur differente de l'élement que l'on veut delet dans le ls on les garde sinon on le retire
       selectItem=selectItem.filter(el=> el.id!==deletId || el.colors !==deletItemColor);
 
+      //on push le nouveau tableau dans le LS avec l'elements retirer 
       localStorage.setItem('produits',JSON.stringify(selectItem));
 
+    //si le LS se retrouve vide on le vide pour ne pas garder de tableau vide
       if (selectItem==0 || selectItem==null){
         localStorage.clear();
       }
-      
+    //pour chaque item suprimer on averti l'utilisateur et on recharge la page pour afficher la suppression instantannément 
 
       alert("produit supprimer");
       location.reload();
@@ -468,41 +492,42 @@ function deletProducts(selectItem){
     }
 
   
-
+//on appel la variable deletProducts et son callback
 deletProducts(selectItem);
 
 
-/*function test(finalProducts){
-  for(let i =0;i<10;i++){
-    console.log(i)
-console.log(finalProducts)
-  }
-}
-test(finalProducts);*/
-
 //calcul le prix total des éléments du panier
 
-/*function totalPriceItems(finalProducts){
+function totalPriceItems(finalProducts){
  
 let totalPrice=document.getElementById("totalPrice");
 console.log(totalPrice)
   let prixTotalCalcul=[];
+
   
-  //console.log(finalProducts)
-
-
-  for (let i = 0 ;i<finalProducts;i++){
+ 
+  console.log(finalProducts)
+//enevement au chargement de la page pour afficher les élements du tableau
+  window.addEventListener("load", (e)=>{
+    //boucle sur le tableau finalProducts correspondant au localstorage + infos a ne pas afficher dans le ls(prix ,description etc...)
+  for (let i = 0 ;i<finalProducts.length;i++){
 console.log('test');
- let quantityItem=finalProducts[i].quantity;
+console.log(finalProducts)
+//initation de variable pour recuperer la quantité pour chaque article et le prix unitaire pour chaque article,on passe les quantitées du tableau de string a Number
+ let quantityItem=Number(finalProducts[i].quantity);
  let PriceByItems=finalProducts[i].price;
- //console.log(PriceByItems,quantityItem)
 
- prixTotalCalcul.push(quantityItem,PriceByItems)
-  
-totalPrice.append(`${eval(prixTotalCalcul.join("*"))}`);
-//console.log(totalPrice)
-
+//calcul du prix pour une seul référence d'item
+let priceUnit=quantityItem * PriceByItems;
+//on push dans un tableau le total prix de chaque item
+prixTotalCalcul.push(priceUnit)
   }
-}*/
+  //on calcul via la method reduce le prix total qu'on stock dans l'accumulator
+  let sommePrice= prixTotalCalcul.reduce((accumulator,currentValue) =>{
+    return accumulator + currentValue;
+  })
+  //on sort de la boucle pour recupérer seulement le dernier total et on l'integre au DOM
+  totalPrice.append(sommePrice);
+})}
 
-//totalPriceItems(finalProducts);
+totalPriceItems(finalProducts);
