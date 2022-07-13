@@ -11,7 +11,7 @@ function productTable () {
  .then((res)=> res.json())
  .then((promise)=>{
   DatasFromApi=promise;
-OrderTable(DatasFromApi);
+OrderTable(DatasFromApi); 
 
    }
  )
@@ -20,7 +20,7 @@ OrderTable(DatasFromApi);
     let emptyBasket=document.querySelector("#cartAndFormContainer h1")
     emptyBasket.textContent='vôtre Panier est vide.';
   }else{
- //fonction productTable retourne un tableau des données du backend(API)
+ //fonction productTable retourne un tableau des données du backend(API) 
     productTable();
   }
 
@@ -28,9 +28,9 @@ OrderTable(DatasFromApi);
 function OrderTable(DatasFromApi){
   
     for (let identifiants in productsInLocalStorage){
-        //on parcour le tableau et attribut les éléments couleurs et quantitée à l'élément sélectionner dans le ls//
+        //on parcour le tableau et attribut les éléments du tableau de l'api dans un nouveau tableau
         for(let i=0;i<DatasFromApi.length;i++){
-          if(productsInLocalStorage[identifiants].id==DatasFromApi[i]._id /*&& DatasFromApi[identifiants].colors==productsInLocalStorage[i].colors*/){
+          if(productsInLocalStorage[identifiants].id==DatasFromApi[i]._id){
             let finalProduct = [];
             finalProduct["price"] = DatasFromApi[i].price;
             finalProduct["name"] = DatasFromApi[i].name;
@@ -372,7 +372,6 @@ if (finalProducts==null){
   return false;
   
 }else if(firstName.value.match(/^[a-zA-Z-]*$/)&&lastName.value.match(/^[a-zA-Z-]*$/)&& address.value.match(/^[a-zA-ZÀ-ÿ0-9\s,.'-]{3,}$/)  &&city.value.match(/^[a-zA-Z-À-ÿ]*$/) &&email.value.match(/^[\w_-]+@[\w-]+\.[a-z]{2,4}$/i)){
-  e.preventDefault();
   alert('commande validée');
 
  
