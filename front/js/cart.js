@@ -10,8 +10,8 @@ function productTable () {
   fetch("http://localhost:3000/api/products/")
  .then((res)=> res.json())
  .then((promise)=>{
-  itemsData=promise;
-OrderTable(itemsData);
+  DatasFromApi=promise;
+OrderTable(DatasFromApi);
 
    }
  )
@@ -24,19 +24,19 @@ OrderTable(itemsData);
     productTable();
   }
 
- /////////////////////////////////////////////////fonction orderTable modification du tableau itemsData(données de promise du fetch API)/////////////////////////////////////////
-function OrderTable(itemsData){
+ /////////////////////////////////////////////////fonction orderTable modification du tableau DatasFromApi(données de promise du fetch API)/////////////////////////////////////////
+function OrderTable(DatasFromApi){
   
     for (let identifiants in productsInLocalStorage){
         //on parcour le tableau et attribut les éléments couleurs et quantitée à l'élément sélectionner dans le ls//
-        for(let i=0;i<itemsData.length;i++){
-          if(productsInLocalStorage[identifiants].id==itemsData[i]._id /*&& itemsData[identifiants].colors==productsInLocalStorage[i].colors*/){
+        for(let i=0;i<DatasFromApi.length;i++){
+          if(productsInLocalStorage[identifiants].id==DatasFromApi[i]._id /*&& DatasFromApi[identifiants].colors==productsInLocalStorage[i].colors*/){
             let finalProduct = [];
-            finalProduct["price"] = itemsData[i].price;
-            finalProduct["name"] = itemsData[i].name;
-            finalProduct["altTxt"] = itemsData[i].altTxt;
-            finalProduct["imageUrl"] = itemsData[i].imageUrl;
-            finalProduct["_id"] = itemsData[i]._id;
+            finalProduct["price"] = DatasFromApi[i].price;
+            finalProduct["name"] = DatasFromApi[i].name;
+            finalProduct["altTxt"] = DatasFromApi[i].altTxt;
+            finalProduct["imageUrl"] = DatasFromApi[i].imageUrl;
+            finalProduct["_id"] = DatasFromApi[i]._id;
             finalProduct["selectedColor"]=productsInLocalStorage[identifiants].colors;
             finalProduct["quantity"]=productsInLocalStorage[identifiants].quantity;
           finalProducts.push(finalProduct);
@@ -371,13 +371,15 @@ if (finalProducts==null){
   alert("Veuillez remplir tout les champs du formulaire pour passer commande");
   return false;
   
-}/*else if(firstName.value !==false && lastName.value !==false && address.value !==false  && city.value !== false && email.value !==false){
+}else if(firstName.value.match(/^[a-zA-Z-]*$/)&&lastName.value.match(/^[a-zA-Z-]*$/)&& address.value.match(/^[a-zA-ZÀ-ÿ0-9\s,.'-]{3,}$/)  &&city.value.match(/^[a-zA-Z-À-ÿ]*$/) &&email.value.match(/^[\w_-]+@[\w-]+\.[a-z]{2,4}$/i)){
   e.preventDefault();
-  alert('veuillez remplir tout les champs du formulaire avec des données valide');
-return false;
+  alert('commande validée');
+
  
-}*/else{
-  alert('commande validée'); 
+}else{
+  alert('veuillez remplir tout les champs du formulaire avec des données valide'); 
+e.preventDefault();
+return false;
 }
 
 //envoie des données vers l'api et récupération du numéro de commande

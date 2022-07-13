@@ -3,42 +3,42 @@
 let str =window.location.href;
 let url = new URL (str);
 let id = url.searchParams.get("id");
-let itemsData=[];
+let DatasFromApi=[];
 
 ///////////////////////////////////////////fonction de récupération des informations par produits/id et intégration dans le DOM //////////////////////////////////////////
  async function productsDisplay () {
  await fetch("http://localhost:3000/api/products/" + id)
  .then((res)=> res.json())
  .then((promise)=>{
-  itemsData=promise;
+  DatasFromApi=promise;
  //intégration balise img
   let item__img=document.querySelector('.item__img');
   img=document.createElement('img');
   item__img.append(img);
-  img.src=`${itemsData.imageUrl}`;
-  img.alt=`${itemsData.altTxt}`;
+  img.src=`${DatasFromApi.imageUrl}`;
+  img.alt=`${DatasFromApi.altTxt}`;
  
   //intégration balise H1
   let itemTitle=document.getElementById('title');
   document.createElement('h1');
-  itemTitle.append(`${itemsData.name}`);
+  itemTitle.append(`${DatasFromApi.name}`);
 
   //intégration span Price
   let price=document.getElementById('price');
   document.createElement('span');
-  price.append(`${itemsData.price}`);
+  price.append(`${DatasFromApi.price}`);
 
   //intégration balise p description
   let description=document.getElementById('description');
   document.createElement('p');
-  description.append(`${itemsData.description}`)
+  description.append(`${DatasFromApi.description}`)
 
   //on récupere les tableau de couleurs//
-    colors=[itemsData.colors];
+    colors=[DatasFromApi.colors];
    //on appel l'élément du DOM ayant pour id'colors';
      let select=document.getElementById('colors');
 //on crée une boucle forEach//
-     itemsData.colors.forEach(items => {
+     DatasFromApi.colors.forEach(items => {
 //on crée pour chaque boucle un élément options comportant un attribut value et une value//
       let optionColor=document.createElement('option');
       optionColor.append(`${items}`);
@@ -90,7 +90,7 @@ else{
 const selectItem={
  colors:`${optionColor.value}`,
   quantity:`${quantity.value}`,
-  id:`${itemsData._id}`,
+  id:`${DatasFromApi._id}`,
 }
 //on crée une condition pour la validation de l'input
 //si la quantité et la couleurs ne sont pas choisie on previent l'utilisateur de l'erreur et on interdit l'envoie des données
