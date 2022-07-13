@@ -1,10 +1,7 @@
 //recuperation du contenu des "produits" du localstorage 
 let productsInLocalStorage=JSON.parse(localStorage.getItem("produits"));
  let cartItems=document.getElementById('cart__items');
-
-
 let finalProducts=[];
-
 ////////////////////////////////////////////////////////récupération des données du tableau de l'API via la method fetch///////////////////////////////////////////////////////
 function productTable () {
   fetch("http://localhost:3000/api/products/")
@@ -12,7 +9,6 @@ function productTable () {
  .then((promise)=>{
   DatasFromApi=promise;
 OrderTable(DatasFromApi); 
-
    }
  )
  }
@@ -23,7 +19,6 @@ OrderTable(DatasFromApi);
  //fonction productTable retourne un tableau des données du backend(API) 
     productTable();
   }
-
  /////////////////////////////////////////////////fonction orderTable modification du tableau DatasFromApi(données de promise du fetch API)/////////////////////////////////////////
 function OrderTable(DatasFromApi){
   
@@ -133,12 +128,10 @@ function displayBasket(finalProducts){
            settingsQuantity.append(quantity,input);
            divDelete.append(deleteItem); 
   }
-   }
-    
+   }  
    ////////////////////////////////////////traitement des boutons de séléction de quantitées sur la page panier modification quantitées//////////////////////////////////////
 
 function quantityBasketFromInput(productsInLocalStorage){
-
 
   window.addEventListener('load',(e)=> {
 let itemQuantity=document.getElementsByClassName('itemQuantity');
@@ -227,8 +220,6 @@ function deletProducts(productsInLocalStorage){
     } 
 //on appel la variable deletProducts et son callback
 deletProducts(productsInLocalStorage);
-
-
 ////////////////////////////////////////////////////////////////calcul le prix total des éléments du panier//////////////////////////////////////////////////////
 
 function totalPriceItems(finalProducts){
@@ -255,35 +246,22 @@ function totalPriceItems(finalProducts){
     })
     //on sort de la boucle pour recupérer seulement le dernier total et on l'integre au DOM
     totalPrice.append(sommePrice);
-    
-   
   })}
-  
   totalPriceItems(finalProducts);
   
 ///////////////////////////////////////////////////////////////////////traitement du formulaire//////////////////////////////////////////////////////////////
 function formValidation(productsInLocalStorage){ 
 //récuperation des éléments du formulaire page panier
 const firstName=document.getElementById('firstName');
-
-const firstNameErrorMsg=document.getElementById('firstNameErrorMsg')
-
-const lastName=document.getElementById('lastName')
-
-const lastNameErrorMSg=document.getElementById('lastNameErrorMsg')
-
-const address=document.getElementById('address')
-
-const addressErrorMsg=document.getElementById('addressErrorMsg')
-
-const city=document.getElementById('city')
-
-const cityErrorMsg=document.getElementById('cityErrorMsg')
-
-const email=document.getElementById('email')
-
-const emailErrorMsg=document.getElementById('emailErrorMsg')
-
+const firstNameErrorMsg=document.getElementById('firstNameErrorMsg');
+const lastName=document.getElementById('lastName');
+const lastNameErrorMSg=document.getElementById('lastNameErrorMsg');
+const address=document.getElementById('address');
+const addressErrorMsg=document.getElementById('addressErrorMsg');
+const city=document.getElementById('city');
+const cityErrorMsg=document.getElementById('cityErrorMsg');
+const email=document.getElementById('email');
+const emailErrorMsg=document.getElementById('emailErrorMsg');
 const order=document.getElementById('order');
     
 //traitements des inputs et du bouton d'envoie du formulaire
@@ -354,13 +332,11 @@ email.addEventListener('change',(e)=>{
 });
 
 //traitement de la soumission du formulaire 
-
 order.addEventListener('click',(e)=>{
 e.preventDefault();
 let order=document.getElementById('order');
     
 //condition pour pouvoir validé le formulaire 
-
 if (finalProducts==null){
   e.preventDefault();
   alert("vôtre pannier est vide,veuilez sélectionner des articles pour passer commande.");
@@ -374,7 +350,6 @@ if (finalProducts==null){
 }else if(firstName.value.match(/^[a-zA-Z-]*$/)&&lastName.value.match(/^[a-zA-Z-]*$/)&& address.value.match(/^[a-zA-ZÀ-ÿ0-9\s,.'-]{3,}$/)  &&city.value.match(/^[a-zA-Z-À-ÿ]*$/) &&email.value.match(/^[\w_-]+@[\w-]+\.[a-z]{2,4}$/i)){
   alert('commande validée');
 
- 
 }else{
   alert('veuillez remplir tout les champs du formulaire avec des données valide'); 
 e.preventDefault();
@@ -407,11 +382,9 @@ const options ={
     'Accept' :'application/json',
     'Content-Type': 'application/json'
   },
-
 };
 
 //appel api ,on vide le localstorage et recupere le numero de commande
-
 fetch("http://localhost:3000/api/products/order", options)
 .then ((response)=> response.json())
 .then((data) =>{
@@ -423,7 +396,6 @@ fetch("http://localhost:3000/api/products/order", options)
 });
 })
 }
-
 formValidation(productsInLocalStorage);
 
 
