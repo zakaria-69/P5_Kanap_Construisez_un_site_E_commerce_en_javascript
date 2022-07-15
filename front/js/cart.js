@@ -3,8 +3,8 @@ let productsInLocalStorage=JSON.parse(localStorage.getItem("produits"));
  let cartItems=document.getElementById('cart__items');
 let finalProducts=[];
 ////////////////////////////////////////////////////////récupération des données du tableau de l'API via la method fetch///////////////////////////////////////////////////////
-function productTable () {
-  fetch("http://localhost:3000/api/products/")
+async function productTable () {
+  await fetch("http://localhost:3000/api/products/")
  .then((res)=> res.json())
  .then((promise)=>{
   DatasFromApi=promise;
