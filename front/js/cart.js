@@ -218,7 +218,6 @@ function deletProducts(productsInLocalStorage) {
 ////////////////////////////////////////////////////////////////calcul le prix total des éléments du panier//////////////////////////////////////////////////////
 
 function totalPriceItems(finalProducts) {
-  console.log('finalProducts ' + finalProducts.length)
   let totalPrice = document.getElementById("totalPrice");
   let prixTotalCalcul = [];
 
@@ -233,13 +232,11 @@ function totalPriceItems(finalProducts) {
     //on push dans un tableau le total prix de chaque item
     prixTotalCalcul.push(priceUnit)
   }
-  console.log('prixTotalCalcul ' + prixTotalCalcul.length)
   //on calcul via la method reduce le prix total qu'on stock dans l'accumulator
   let sommePrice = prixTotalCalcul.reduce((accumulator, currentValue) => {
     return accumulator + currentValue;
   })
   //on sort de la boucle pour recupérer seulement le dernier total et on l'integre au DOM
-  console.log('sommePrice ' + sommePrice)
   totalPrice.append(sommePrice);
 }
 
