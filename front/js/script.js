@@ -13,7 +13,7 @@ async function fetchDatasFromApi () {
     for(i=0;i<DatasFromApi.length;i++){
     //création élement a
       let itemsLink =document.createElement('a');
-      itemsLink.href=`./product.html?id=${DatasFromApi[i]._id}` ;
+      itemsLink.href = `./product.html?id=${DatasFromApi[i]._id}`;
     //création élement img
       let itemsImages=document.createElement('img');
       itemsImages.src=`${DatasFromApi[i].imageUrl}`; 

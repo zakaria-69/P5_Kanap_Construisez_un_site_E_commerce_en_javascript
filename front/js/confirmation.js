@@ -1,7 +1,8 @@
 function displayCommandeNum(){
     const CommandeNum=document.getElementById('orderId');
-    CommandeNum.append(localStorage.getItem("orderId"));
-    localStorage.clear();
+    let str =window.location.href;
+    let url = new URL (str);
+    CommandeNum.append(url.searchParams.get("orderId"));
 }
 displayCommandeNum();
 
