@@ -2,6 +2,18 @@
 let productsInLocalStorage = JSON.parse(localStorage.getItem("produits"));
 let cartItems = document.getElementById('cart__items');
 let finalProducts = [];
+
+//réorganisation du tableau par id d'éléments
+productsInLocalStorage.sort(function (a, b) {
+  if (a.id < b.id) {
+    return -1;
+  }
+  if (a.id > b.id) {
+    return 1;
+  }
+  return 0;
+});
+
 ////////////////////////////////////////////////////////récupération des données du tableau de l'API via la method fetch///////////////////////////////////////////////////////
 async function productTable() {
   await fetch("http://localhost:3000/api/products/")
